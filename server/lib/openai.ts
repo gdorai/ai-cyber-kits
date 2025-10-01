@@ -15,7 +15,7 @@ export async function detectAIText(text: string): Promise<{
 }> {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -84,7 +84,7 @@ export async function analyzePhishing(emailText: string): Promise<{
 }> {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -156,7 +156,7 @@ export async function analyzeBias(text: string): Promise<{
 }> {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
