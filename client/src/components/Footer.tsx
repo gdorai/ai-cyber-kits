@@ -36,7 +36,7 @@ export function Footer() {
                   Documentation
                 </Link>
                 <a
-                  href="https://github.com/yourusername/ai-cyber-kits"
+                  href="https://github.com/gdorai/ai-cyber-kits"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
