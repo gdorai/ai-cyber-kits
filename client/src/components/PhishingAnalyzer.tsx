@@ -36,6 +36,11 @@ export function PhishingAnalyzer() {
     analyzeMutation.mutate(emailText);
   };
 
+  const handleReset = () => {
+    setEmailText("");
+    analyzeMutation.reset();
+  };
+
   const results = analyzeMutation.data;
   const isLoading = analyzeMutation.isPending;
 
@@ -64,14 +69,26 @@ export function PhishingAnalyzer() {
             data-testid="input-email-text"
           />
         </div>
-        <Button
-          onClick={handleAnalyze}
-          disabled={isLoading || !emailText.trim()}
-          className="w-full"
-          data-testid="button-analyze-phishing"
-        >
-          {isLoading ? "Analyzing..." : "Analyze Email"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleAnalyze}
+            disabled={isLoading || !emailText.trim()}
+            className="flex-1"
+            data-testid="button-analyze-phishing"
+          >
+            {isLoading ? "Analyzing..." : "Analyze Email"}
+          </Button>
+          {(emailText || results) && (
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              disabled={isLoading}
+              data-testid="button-reset-phishing"
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </Card>
 
       {results && (

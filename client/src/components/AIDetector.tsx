@@ -36,6 +36,11 @@ export function AIDetector() {
     detectMutation.mutate(text);
   };
 
+  const handleReset = () => {
+    setText("");
+    detectMutation.reset();
+  };
+
   const results = detectMutation.data;
   const isLoading = detectMutation.isPending;
 
@@ -70,14 +75,26 @@ export function AIDetector() {
             data-testid="input-ai-text"
           />
         </div>
-        <Button
-          onClick={handleDetect}
-          disabled={isLoading || !text.trim()}
-          className="w-full"
-          data-testid="button-detect-ai"
-        >
-          {isLoading ? "Analyzing..." : "Detect AI"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleDetect}
+            disabled={isLoading || !text.trim()}
+            className="flex-1"
+            data-testid="button-detect-ai"
+          >
+            {isLoading ? "Analyzing..." : "Detect AI"}
+          </Button>
+          {(text || results) && (
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              disabled={isLoading}
+              data-testid="button-reset-ai"
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </Card>
 
       {results && (

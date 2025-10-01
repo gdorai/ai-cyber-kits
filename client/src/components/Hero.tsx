@@ -33,10 +33,6 @@ export function Hero() {
             </div>
             <div className="flex flex-wrap items-center gap-6 pt-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-chart-2" />
-                <span>100% Private</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4 text-chart-2" />
                 <span>No Data Stored</span>
               </div>

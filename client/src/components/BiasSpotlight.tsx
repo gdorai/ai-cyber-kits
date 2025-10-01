@@ -36,6 +36,11 @@ export function BiasSpotlight() {
     analyzeMutation.mutate(text);
   };
 
+  const handleReset = () => {
+    setText("");
+    analyzeMutation.reset();
+  };
+
   const results = analyzeMutation.data;
   const isLoading = analyzeMutation.isPending;
 
@@ -70,14 +75,26 @@ export function BiasSpotlight() {
             data-testid="input-bias-text"
           />
         </div>
-        <Button
-          onClick={handleAnalyze}
-          disabled={isLoading || !text.trim()}
-          className="w-full"
-          data-testid="button-analyze-bias"
-        >
-          {isLoading ? "Analyzing..." : "Analyze Bias"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleAnalyze}
+            disabled={isLoading || !text.trim()}
+            className="flex-1"
+            data-testid="button-analyze-bias"
+          >
+            {isLoading ? "Analyzing..." : "Analyze Bias"}
+          </Button>
+          {(text || results) && (
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              disabled={isLoading}
+              data-testid="button-reset-bias"
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </Card>
 
       {results && (

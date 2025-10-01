@@ -37,6 +37,11 @@ export function BreachLookup() {
     checkBreachMutation.mutate(email);
   };
 
+  const handleReset = () => {
+    setEmail("");
+    checkBreachMutation.reset();
+  };
+
   const results = checkBreachMutation.data;
   const isLoading = checkBreachMutation.isPending;
 
@@ -66,14 +71,26 @@ export function BreachLookup() {
             data-testid="input-email"
           />
         </div>
-        <Button
-          onClick={handleCheck}
-          disabled={isLoading || !email}
-          className="w-full"
-          data-testid="button-check-breach"
-        >
-          {isLoading ? "Checking..." : "Check for Breaches"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleCheck}
+            disabled={isLoading || !email}
+            className="flex-1"
+            data-testid="button-check-breach"
+          >
+            {isLoading ? "Checking..." : "Check for Breaches"}
+          </Button>
+          {(email || results) && (
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              disabled={isLoading}
+              data-testid="button-reset-breach"
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </Card>
 
       {results && (
