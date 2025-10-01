@@ -41,7 +41,7 @@ export default function Home() {
             <>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-                  Four Essential Tools
+                  Protect, Detect, Secure - All in One Free Toolkit
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
                   Quick, free, and powerful security checks at your fingertips
