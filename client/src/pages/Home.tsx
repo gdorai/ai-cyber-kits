@@ -19,16 +19,12 @@ export default function Home() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button 
-            onClick={() => setActiveTool(null)}
-            className="flex items-center gap-2 hover-elevate active-elevate-2 px-2 py-1 -ml-2 rounded-md transition-colors"
-            data-testid="button-home"
-          >
+          <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-semibold text-lg">AI Cyber Kits</span>
-          </button>
+          </div>
           <ThemeToggle />
         </div>
       </header>
