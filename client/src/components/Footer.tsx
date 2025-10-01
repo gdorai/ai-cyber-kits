@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="border-t py-12 mt-24">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <h3 className="font-semibold mb-4">AI Cyber Kits</h3>
             <p className="text-sm text-muted-foreground">
@@ -27,23 +27,6 @@ export function Footer() {
                 <Github className="w-4 h-4" />
                 GitHub
               </a>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-medium mb-4">Stay Safe</h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              Get monthly security tips
-            </p>
-            <div className="flex gap-2">
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1"
-                data-testid="input-newsletter"
-              />
-              <Button data-testid="button-subscribe">
-                <Mail className="w-4 h-4" />
-              </Button>
             </div>
           </div>
         </div>
