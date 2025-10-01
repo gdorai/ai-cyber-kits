@@ -1,46 +1,43 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, TrendingUp, FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { apiRequest } from "@/lib/queryClient";
+import type { AIDetectionResponse } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export function AIDetector() {
   const [text, setText] = useState("");
-  const [results, setResults] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const detectMutation = useMutation({
+    mutationFn: async (text: string) => {
+      const response = await apiRequest<AIDetectionResponse>("/api/detect-ai", {
+        method: "POST",
+        body: JSON.stringify({ text }),
+        headers: { "Content-Type": "application/json" },
+      });
+      return response;
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleDetect = () => {
     if (!text.trim()) return;
-    
-    setIsLoading(true);
-    // Simulate detection
-    setTimeout(() => {
-      // todo: remove mock functionality
-      setResults({
-        aiProbability: 72,
-        confidence: "High",
-        indicators: [
-          {
-            name: "Repetitive Phrasing",
-            score: 78,
-            explanation: "Multiple similar sentence structures detected",
-          },
-          {
-            name: "Low Lexical Diversity",
-            score: 65,
-            explanation: "Limited vocabulary variation suggests AI generation",
-          },
-          {
-            name: "Formal Consistency",
-            score: 71,
-            explanation: "Unusually consistent tone throughout text",
-          },
-        ],
-      });
-      setIsLoading(false);
-    }, 1500);
+    detectMutation.mutate(text);
   };
+
+  const results = detectMutation.data;
+  const isLoading = detectMutation.isPending;
 
   const getConfidenceColor = (confidence: string) => {
     if (confidence === "High") return "text-chart-2";
@@ -98,35 +95,37 @@ export function AIDetector() {
             </div>
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Detection Indicators</h3>
-            <div className="space-y-4">
-              {results.indicators.map((indicator: any, idx: number) => (
-                <Card key={idx} className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-chart-4/10 flex items-center justify-center flex-shrink-0">
-                      {idx === 0 && <FileText className="w-5 h-5 text-chart-4" />}
-                      {idx === 1 && <TrendingUp className="w-5 h-5 text-chart-4" />}
-                      {idx === 2 && <Sparkles className="w-5 h-5 text-chart-4" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold">{indicator.name}</h4>
-                        <span className="text-sm font-medium">{indicator.score}%</span>
+          {results.indicators.length > 0 && (
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Detection Indicators</h3>
+              <div className="space-y-4">
+                {results.indicators.map((indicator, idx: number) => (
+                  <Card key={idx} className="p-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-chart-4/10 flex items-center justify-center flex-shrink-0">
+                        {idx === 0 && <FileText className="w-5 h-5 text-chart-4" />}
+                        {idx === 1 && <TrendingUp className="w-5 h-5 text-chart-4" />}
+                        {idx === 2 && <Sparkles className="w-5 h-5 text-chart-4" />}
                       </div>
-                      <div className="h-2 rounded-full overflow-hidden bg-muted mb-2">
-                        <div
-                          className="h-full bg-chart-4 transition-all duration-700"
-                          style={{ width: `${indicator.score}%` }}
-                        />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-4 mb-2 flex-wrap">
+                          <h4 className="font-semibold">{indicator.name}</h4>
+                          <span className="text-sm font-medium">{indicator.score}%</span>
+                        </div>
+                        <div className="h-2 rounded-full overflow-hidden bg-muted mb-2">
+                          <div
+                            className="h-full bg-chart-4 transition-all duration-700"
+                            style={{ width: `${indicator.score}%` }}
+                          />
+                        </div>
+                        <p className="text-sm text-muted-foreground">{indicator.explanation}</p>
                       </div>
-                      <p className="text-sm text-muted-foreground">{indicator.explanation}</p>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </Card>
       )}
     </div>

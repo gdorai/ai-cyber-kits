@@ -1,48 +1,43 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RiskMeter } from "./RiskMeter";
 import { AlertTriangle, DollarSign, Link as LinkIcon, Clock } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import type { PhishingResponse } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export function PhishingAnalyzer() {
   const [emailText, setEmailText] = useState("");
-  const [results, setResults] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const analyzeMutation = useMutation({
+    mutationFn: async (emailText: string) => {
+      const response = await apiRequest<PhishingResponse>("/api/analyze-phishing", {
+        method: "POST",
+        body: JSON.stringify({ emailText }),
+        headers: { "Content-Type": "application/json" },
+      });
+      return response;
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleAnalyze = () => {
     if (!emailText.trim()) return;
-    
-    setIsLoading(true);
-    // Simulate analysis
-    setTimeout(() => {
-      // todo: remove mock functionality
-      setResults({
-        overallRisk: 75,
-        urgencyScore: 85,
-        financialRisk: 70,
-        linkSafety: 60,
-        suspiciousPatterns: [
-          {
-            type: "urgency",
-            text: "Act now!",
-            reason: "Creates false sense of urgency",
-          },
-          {
-            type: "financial",
-            text: "verify your account",
-            reason: "Common phishing tactic requesting sensitive information",
-          },
-          {
-            type: "link",
-            text: "http://suspicious-link.com",
-            reason: "Domain doesn't match claimed sender",
-          },
-        ],
-      });
-      setIsLoading(false);
-    }, 1500);
+    analyzeMutation.mutate(emailText);
   };
+
+  const results = analyzeMutation.data;
+  const isLoading = analyzeMutation.isPending;
 
   return (
     <div className="space-y-6">
@@ -111,24 +106,26 @@ export function PhishingAnalyzer() {
             </Card>
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Suspicious Patterns Detected</h3>
-            <div className="space-y-3">
-              {results.suspiciousPatterns.map((pattern: any, idx: number) => (
-                <Card key={idx} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-                    <div className="flex-1 min-w-0">
-                      <div className="font-mono text-sm bg-muted px-2 py-1 rounded mb-2 inline-block">
-                        "{pattern.text}"
+          {results.suspiciousPatterns.length > 0 && (
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Suspicious Patterns Detected</h3>
+              <div className="space-y-3">
+                {results.suspiciousPatterns.map((pattern, idx: number) => (
+                  <Card key={idx} className="p-4">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <div className="font-mono text-sm bg-muted px-2 py-1 rounded mb-2 inline-block break-all">
+                          "{pattern.text}"
+                        </div>
+                        <p className="text-sm text-muted-foreground">{pattern.reason}</p>
                       </div>
-                      <p className="text-sm text-muted-foreground">{pattern.reason}</p>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </Card>
       )}
     </div>

@@ -1,47 +1,43 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Flame, Scale } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import type { BiasResponse } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export function BiasSpotlight() {
   const [text, setText] = useState("");
-  const [results, setResults] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const analyzeMutation = useMutation({
+    mutationFn: async (text: string) => {
+      const response = await apiRequest<BiasResponse>("/api/analyze-bias", {
+        method: "POST",
+        body: JSON.stringify({ text }),
+        headers: { "Content-Type": "application/json" },
+      });
+      return response;
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleAnalyze = () => {
     if (!text.trim()) return;
-    
-    setIsLoading(true);
-    // Simulate analysis
-    setTimeout(() => {
-      // todo: remove mock functionality
-      setResults({
-        objectivityScore: 45,
-        emotionalLanguageCount: 8,
-        biasIndicators: 5,
-        highlights: [
-          {
-            text: "shocking",
-            type: "emotional",
-            explanation: "Strong emotional language reduces objectivity",
-          },
-          {
-            text: "unbelievable",
-            type: "emotional",
-            explanation: "Hyperbolic language suggests bias",
-          },
-          {
-            text: "obviously",
-            type: "subjective",
-            explanation: "Assumes reader agreement without evidence",
-          },
-        ],
-      });
-      setIsLoading(false);
-    }, 1500);
+    analyzeMutation.mutate(text);
   };
+
+  const results = analyzeMutation.data;
+  const isLoading = analyzeMutation.isPending;
 
   const getBiasColor = (type: string) => {
     if (type === "emotional") return "bg-chart-5/20 text-chart-5 border-chart-5/40";
@@ -110,32 +106,34 @@ export function BiasSpotlight() {
             </Card>
           </div>
 
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <h3 className="text-xl font-semibold">Detected Issues</h3>
-              <div className="flex gap-2">
-                <Badge className={getBiasColor("emotional")}>Emotional</Badge>
-                <Badge className={getBiasColor("subjective")}>Subjective</Badge>
+          {results.highlights.length > 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <h3 className="text-xl font-semibold">Detected Issues</h3>
+                <div className="flex gap-2 flex-wrap">
+                  <Badge className={getBiasColor("emotional")}>Emotional</Badge>
+                  <Badge className={getBiasColor("subjective")}>Subjective</Badge>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {results.highlights.map((highlight, idx: number) => (
+                  <Card key={idx} className="p-4">
+                    <div className="flex items-start gap-3">
+                      <Badge className={getBiasColor(highlight.type)} variant="outline">
+                        {highlight.type}
+                      </Badge>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-mono text-sm bg-muted px-2 py-1 rounded mb-2 inline-block break-all">
+                          "{highlight.text}"
+                        </div>
+                        <p className="text-sm text-muted-foreground">{highlight.explanation}</p>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
               </div>
             </div>
-            <div className="space-y-3">
-              {results.highlights.map((highlight: any, idx: number) => (
-                <Card key={idx} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Badge className={getBiasColor(highlight.type)} variant="outline">
-                      {highlight.type}
-                    </Badge>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-mono text-sm bg-muted px-2 py-1 rounded mb-2 inline-block">
-                        "{highlight.text}"
-                      </div>
-                      <p className="text-sm text-muted-foreground">{highlight.explanation}</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
+          )}
         </Card>
       )}
     </div>
