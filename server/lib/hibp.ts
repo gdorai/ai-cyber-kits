@@ -96,8 +96,13 @@ export async function checkBreaches(email: string): Promise<{
       riskScore,
       breaches: processedBreaches,
     };
-  } catch (error) {
-    throw new Error("Failed to check breaches: " + (error as Error).message);
+  } catch (error: any) {
+    if (error.statusCode) {
+      throw error;
+    }
+    const err: any = new Error("Failed to check breaches: " + (error as Error).message);
+    err.statusCode = 503;
+    throw err;
   }
 }
 
