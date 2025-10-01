@@ -27,7 +27,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-lg">CheckSafe</span>
+            <span className="font-semibold text-lg">AI Cyber Kits</span>
           </button>
           <ThemeToggle />
         </div>

@@ -31,7 +31,7 @@ export async function checkBreaches(email: string): Promise<{
 }> {
   try {
     const headers: Record<string, string> = {
-      "User-Agent": "CheckSafe-SecurityTools",
+      "User-Agent": "AICyberKits-SecurityTools",
     };
 
     // Add API key if available

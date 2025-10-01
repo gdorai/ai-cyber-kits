@@ -8,7 +8,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-semibold mb-4">CheckSafe</h3>
+            <h3 className="font-semibold mb-4">AI Cyber Kits</h3>
             <p className="text-sm text-muted-foreground">
               Everyday digital safety tools powered by research-backed AI and
               cybersecurity best practices.
@@ -48,7 +48,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>© 2025 CheckSafe. Built for everyday digital safety.</p>
+          <p>© 2025 AI Cyber Kits. Built for everyday digital safety.</p>
         </div>
       </div>
     </footer>
