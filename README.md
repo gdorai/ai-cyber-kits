@@ -37,7 +37,7 @@ Analyze text for bias, emotional language, and subjectivity.
 - **Browser-based processing** - Minimal server interaction
 - **Open source** - Audit the code yourself
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 20+ installed
