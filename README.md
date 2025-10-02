@@ -1,8 +1,8 @@
-# CheckSafe - Everyday Digital Safety & AI Checkpoint
+# Everyday Digital Safety & AI Checkpoint
 
-A free, privacy-first web application providing essential cybersecurity and AI analysis tools for everyday users. CheckSafe helps you stay safe online with four powerful security tools that explain results in plain English.
+A free, privacy-first web application providing essential cybersecurity and AI analysis tools for everyday users. AICyberKits helps you stay safe online with four powerful security tools that explain results in plain English.
 
-## 🔒 Core Features
+## Core Features
 
 ### 1. **Email/Domain Breach Lookup**
 Check if your email has been exposed in data breaches using the HaveIBeenPwned API.
@@ -30,7 +30,7 @@ Analyze text for bias, emotional language, and subjectivity.
 - Bias indicator counting
 - Highlighted problematic phrases with explanations
 
-## 🛡️ Privacy First
+## Privacy First
 
 - **No data storage** - All analysis is ephemeral
 - **No user tracking** - Your data is never logged
@@ -48,8 +48,8 @@ Analyze text for bias, emotional language, and subjectivity.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/checksafe.git
-cd checksafe
+git clone https://github.com/yourusername/aicyberkits.git
+cd aicyberkits
 ```
 
 2. Install dependencies:
@@ -77,7 +77,7 @@ npm run dev
 
 5. Open your browser to the URL shown in the terminal (typically `http://localhost:5000`)
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 18** with TypeScript
@@ -94,7 +94,7 @@ npm run dev
 - **OpenAI API** for AI-powered analysis
 - **HaveIBeenPwned API** for breach data
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 checksafe/
@@ -111,7 +111,7 @@ checksafe/
 └── design_guidelines.md # UI/UX design system
 ```
 
-## 🔑 API Endpoints
+## API Endpoints
 
 ### POST `/api/check-breach`
 Check if an email appears in data breaches.
@@ -198,19 +198,9 @@ Analyze text for bias and emotional language.
   "highlights": [...]
 }
 ```
-
-## 🎨 Design System
-
-CheckSafe follows a clean, accessible design system inspired by Linear's minimalism and Stripe's clarity. See `design_guidelines.md` for complete design specifications.
-
-**Color Scheme:**
-- Primary: Confident blue (#0066CC)
-- Success: Green (safe results)
-- Warning: Amber (caution)
-- Danger: Red (high risk)
 - Light/Dark mode support
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -220,28 +210,15 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
-CheckSafe is provided for educational and informational purposes. While we strive for accuracy:
+This is provided for educational and informational purposes. While we strive for accuracy:
 - Breach data comes from third-party sources (HaveIBeenPwned)
 - AI detection is probabilistic, not definitive
 - Always verify critical security decisions with multiple sources
 - OpenAI API calls may be slow for longer text inputs (20-30 seconds typical); consider using shorter excerpts
 
-## 🙏 Acknowledgments
-
-- [HaveIBeenPwned](https://haveibeenpwned.com/) for breach data
-- [OpenAI](https://openai.com/) for AI-powered analysis
-- [shadcn/ui](https://ui.shadcn.com/) for beautiful components
-
-## 📧 Contact
-
-For questions or support, please open an issue on GitHub.
-
----
-
-Built with ❤️ for a safer internet
